@@ -12,14 +12,12 @@ namespace ConsoleApp
         {
             var timer = new System.Timers.Timer(30000); //30 seconds
 
-            //timer.Elapsed += OnTimedEvent;
+            timer.Elapsed += OnTimedEvent;
 
             OnTimedEvent(timer, null);
 
-            //timer.Enabled = true;
+            timer.Enabled = true;
 
-
-            //Console.WriteLine("Press any key to exit...");
             Console.ReadKey();
         }
 

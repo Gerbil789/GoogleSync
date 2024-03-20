@@ -121,48 +121,6 @@ namespace GoogleSync
             {
                 Console.WriteLine("An error occurred in Synchronize: " + e.Message);
             }
-            
-
-
-            ////sync drive files to local files
-            //foreach (var file in driveFiles)
-            //{
-            //    var localFilePath = Path.Combine(localFolderPath, file.Name);
-            //    if (System.IO.File.Exists(localFilePath))
-            //    {
-            //        var lastModifiedLocal = Directory.GetLastWriteTime(localFilePath);
-            //        var lastModifiedDrive = file.ModifiedTime;
-
-            //        if (lastModifiedLocal < lastModifiedDrive)
-            //        {
-            //            Console.WriteLine($"File {file.Name} is newer on Google Drive. Downloading...");
-            //            await new DownloadFile(_service).Execute(file.Id, localFilePath);
-            //        }
-            //        else if (lastModifiedLocal > lastModifiedDrive)
-            //        {
-            //            Console.WriteLine($"File {file.Name} is newer locally. Updating...");
-            //            await new UpdateFile(_service).Execute(file.Id, localFilePath);
-            //        }
-            //    }
-            //    else
-            //    {
-            //        Console.WriteLine($"File {file.Name} does not exist locally. Downloading...");
-            //        await new DownloadFile(_service).Execute(file.Id, localFilePath);
-            //    }
-            //}
-            ////sync local files to drive files
-            //string[] localFiles = Directory.GetFiles(localFolderPath);
-            //foreach (var localFile in localFiles)
-            //{
-            //    var fileName = Path.GetFileName(localFile);
-            //    var driveFile = driveFiles.FirstOrDefault(f => f.Name == fileName);
-            //    if (driveFile == null)
-            //    {
-            //        Console.WriteLine($"File {fileName} does not exist on Google Drive. Uploading...");
-            //        await new UploadFile(_service).Execute(folderId, localFile);
-            //    }
-            //}
-
         }
 
         static string CalculateSHA1Checksum(string filePath)
