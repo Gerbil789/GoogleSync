@@ -1,33 +1,32 @@
-﻿using GoogleSync;
-using System.Timers;
+﻿using GoogleDrive;
 
 namespace ConsoleApp
 {
     class Program
     {
-        static readonly GoogleDrive drive = new GoogleDrive("C:\\Users\\vojta\\source\\repos\\GoogleSync\\GoogleSync\\client_secret.json");
         static readonly string folderPath = @"C:\Users\vojta\Documents\GoogleSync";
-        static readonly string folderId = drive.GetFolderId("Test");
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
-            var timer = new System.Timers.Timer(30000); //30 seconds
+            try
+            {
+                var service = Drive.InitializeDriveService("C:\\Users\\vojta\\source\\repos\\GoogleSync\\GoogleSync\\client_secret.json").Result;
 
-            timer.Elapsed += OnTimedEvent;
+                var folderId = await Folder.GetFolderId(service, "Test");
+                Console.WriteLine("Folder ID: " + folderId);
 
-            OnTimedEvent(timer, null);
+                DateTime date = await Folder.GetLatestModificationDate(service, folderId);
+                Console.WriteLine("Latest modification date: " + date);
 
-            timer.Enabled = true;
+                var pageToken =  Drive.GetPageToken(service);
+                Console.WriteLine("Page token: " + pageToken);
 
-            Console.ReadKey();
-        }
+                pageToken = Drive.FetchChanges(service, pageToken);
 
-        private static async void OnTimedEvent(Object source, ElapsedEventArgs e)
-        {
-            Console.WriteLine("Started Synchronization at {0}", e?.SignalTime ?? DateTime.Now);
-
-            await drive.Synchronize(folderId, folderPath);
-
-            Console.WriteLine("Synchronization finished at {0}", DateTime.Now);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("[ERROR]" + e.Message);
+            }
         }
 
     }

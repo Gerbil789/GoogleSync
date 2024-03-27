@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GoogleSync\GoogleSync.csproj" />
+    <ProjectReference Include="..\GoogleSync\GoogleDrive.csproj" />
   </ItemGroup>
 
 </Project>
