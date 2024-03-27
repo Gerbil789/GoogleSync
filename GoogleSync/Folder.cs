@@ -40,7 +40,7 @@ namespace GoogleDrive
             {
                 FilesResource.ListRequest request = service.Files.List();
                 request.Q = $"'{folderId}' in parents";
-                request.Fields = "files(id, name, parents, modifiedTime, trashed, sha1Checksum, createdTime, trashedTime)";
+                request.Fields = "files(id, name, parents, modifiedTime, trashed, sha1Checksum, createdTime, trashedTime, capabilities, properties)";
                 request.PageSize = 100; // Adjust as needed
                 request.OrderBy = "modifiedTime desc";
 
