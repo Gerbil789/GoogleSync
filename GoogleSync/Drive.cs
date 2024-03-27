@@ -68,7 +68,7 @@ namespace GoogleDrive
                 {
                     var request = service.Changes.List(pageToken);
                     request.Spaces = "drive";
-                    request.RestrictToMyDrive = true;
+                    //request.RestrictToMyDrive = true;
                     request.IncludeRemoved = true;
                     var changes = request.Execute();
                     foreach (var change in changes.Changes)
@@ -88,7 +88,6 @@ namespace GoogleDrive
             }
             catch (Exception e)
             {
-                // TODO(developer) - handle error appropriately
                 if (e is AggregateException)
                 {
                     Console.WriteLine("[ERROR][GET CHANGES]: Credential Not found");

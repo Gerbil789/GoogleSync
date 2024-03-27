@@ -40,18 +40,27 @@ namespace GoogleDrive
             {
                 FilesResource.ListRequest request = service.Files.List();
                 request.Q = $"'{folderId}' in parents";
-                request.Fields = "files(id, name, parents, modifiedTime, trashed, sha1Checksum)";
+                request.Fields = "files(id, name, parents, modifiedTime, trashed, sha1Checksum, createdTime, trashedTime)";
                 request.PageSize = 100; // Adjust as needed
                 request.OrderBy = "modifiedTime desc";
 
                 var response = await request.ExecuteAsync();
+
+                var trashedfiles = response.Files.Where(f => f.Trashed ?? false).ToList();
 
                 if (!string.IsNullOrEmpty(response.NextPageToken))
                 {
                     Console.WriteLine("[WARNING][GET LATEST MODIFICATION DATE]: There are more than 100 files in the folder. Only the first 100 files are considered.");
                 }
 
-                var latestChangeTime = response.Files.FirstOrDefault()?.ModifiedTimeDateTimeOffset?.DateTime ?? DateTime.MinValue;
+                var latestCreationDate = response.Files.Max(f => f.CreatedTimeDateTimeOffset?.DateTime) ?? DateTime.MinValue;
+                var latestModificationDate = response.Files.Max(f => f.ModifiedTimeDateTimeOffset?.DateTime) ?? DateTime.MinValue;
+                var latestTrashedDate = response.Files.Max(f => f.TrashedTimeDateTimeOffset?.DateTime) ?? DateTime.MinValue; // <-- [FIX] RETURN NULL ALWAYS!!! 
+
+                var latestChangeTime = DateTime.MinValue;
+                if(latestChangeTime < latestCreationDate) latestChangeTime = latestCreationDate;
+                if(latestChangeTime < latestModificationDate) latestChangeTime = latestModificationDate;
+                if(latestChangeTime < latestTrashedDate) latestChangeTime = latestTrashedDate;
 
                 return latestChangeTime;
             }

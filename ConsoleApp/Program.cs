@@ -17,6 +17,9 @@ namespace ConsoleApp
                 DateTime date = await Folder.GetLatestModificationDate(service, folderId);
                 Console.WriteLine("Latest modification date: " + date);
 
+
+
+
                 var pageToken =  Drive.GetPageToken(service);
                 Console.WriteLine("Page token: " + pageToken);
 
